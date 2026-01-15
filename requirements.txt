@@ -1,0 +1,6 @@
+nano requirements.txt
+
+Flask
+Pillow
+num2words
+gunicorn
