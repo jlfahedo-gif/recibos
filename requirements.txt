@@ -1,4 +1,4 @@
-nano requirements.txt
+
 
 Flask
 Pillow
