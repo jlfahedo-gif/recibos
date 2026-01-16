@@ -2,3 +2,4 @@ Flask
 Pillow
 num2words
 gunicorn
+openpyxl
