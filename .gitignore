@@ -1,4 +1,4 @@
-.DS_Store
-folio*.txt
-recibo_*.jpg
+*.xlsx
+*.json
 recibos_generados/
+.DS_Store
