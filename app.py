@@ -10,15 +10,21 @@ FOLIO_FILE = "folio.txt"
 FONT = "fonts/AmericanTypewriter.ttc"
 
 def obtener_folio():
+    hoy = datetime.now().strftime("%Y%m%d")
+    contador_file = f"folio_{hoy}.txt"
+
     try:
-        with open(FOLIO_FILE, "r") as f:
+        with open(contador_file, "r") as f:
             num = int(f.read())
     except:
         num = 0
+
     num += 1
-    with open(FOLIO_FILE, "w") as f:
+
+    with open(contador_file, "w") as f:
         f.write(str(num))
-    return f"RE-{str(num).zfill(4)}"
+
+    return f"RE-{hoy}-{str(num).zfill(3)}"
 
 @app.route("/", methods=["GET", "POST"])
 def generar():
