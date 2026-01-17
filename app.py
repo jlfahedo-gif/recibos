@@ -85,18 +85,69 @@ def generar():
 
         return send_file(salida, as_attachment=True)
 
+    # ---------- PLANTILLA HTML CON LOGO Y FORMULARIO CENTRADO ----------
     return render_template_string("""
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Recibos</title>
+    <link rel="icon" href="/static/icono-recibo.png">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            font-family: Arial, sans-serif;
+            margin-top: 50px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            background-color: #f9f9f9;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        input, button {
+            padding: 8px 12px;
+            font-size: 16px;
+        }
+        button {
+            cursor: pointer;
+        }
+        img.logo {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 20px;
+        }
+        a {
+            margin-top: 15px;
+            text-decoration: none;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <img class="logo" src="/static/icono-recibo.png" alt="Logo Recibos">
     <h2>Generar Recibo</h2>
+
     <form method="post">
-        Nombre:<br><input name="nombre" required><br><br>
-        Concepto:<br><input name="concepto" required><br><br>
-        Cantidad:<br><input name="cantidad" type="number" step="0.01" required><br><br>
+        <input name="nombre" placeholder="Nombre" required>
+        <input name="concepto" placeholder="Concepto" required>
+        <input name="cantidad" type="number" step="0.01" placeholder="Cantidad" required>
         <button>Generar Recibo</button>
     </form>
-    <br>
+
     <a href="/historial">📂 Ver historial</a><br>
     <a href="/excel">📊 Descargar Excel</a>
-    """)
+</body>
+</html>
+""")
 
 # ---------- HISTORIAL ----------
 @app.route("/historial")
@@ -106,6 +157,12 @@ def historial():
     if os.path.exists(BASE_RECIBOS):
         for fecha in sorted(os.listdir(BASE_RECIBOS), reverse=True):
             carpeta = os.path.join(BASE_RECIBOS, fecha)
+
+            # ---------- AGREGAR ESTA LÍNEA ----------
+            if not os.path.isdir(carpeta):
+                continue  # ignora archivos que no son carpetas (como .DS_Store)
+            # -----------------------------------------
+
             for archivo in sorted(os.listdir(carpeta), reverse=True):
                 recibos.append(f"{fecha}/{archivo}")
 
